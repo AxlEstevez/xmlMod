@@ -33,12 +33,13 @@ def countElements(xml):
     childs = root.getchildren()
     return len(childs)
 
-def mkhtml(xslt, xml):
+def mkhtml(xslt, xml, html_file):
     # -----------------------------------------------------
     # Crea un archivo html a partir de un xslt.
     # Parámetros:
     # xslt -- ruta del archivo xslt
     # xml -- ruta del archivo xml
+    # html_file -- ruta del archiv htmla crear
     # -----------------------------------------------------
     # Tratamiento de archivo de tranformación usando un parse.
     xsl_doc = etree.parse(xslt)
@@ -49,6 +50,21 @@ def mkhtml(xslt, xml):
     outputDoc = xsl_trans(xml_doc)
     # Se escribe el archivo HTML
     outputDoc.write(
-        "templates/index.html",
+       html_file,
         pretty_print = True
     )
+def validateXML(xml,xsd):
+    """valida un xml con su xsd
+
+    Devuele falso o verdadero si el archivo xml cumple con
+    lo establecido en su schema (archivo xsd).
+
+    parámetros:
+    xml -- ruta del archivo xml.
+    xsd -- ruta del archivo xsd.
+    """
+    schema = xmlschema.XMLSchema(xsd)
+    state = False
+    if schema.is_valid(xml):
+        state = True
+    return state
